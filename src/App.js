@@ -2,11 +2,12 @@ import React from 'react'
 import {Grid} from '@material-ui/core'
 import youtube from './API/youtube';
 import SearchBar from './Components/SearchBar';
-import VideoDetail from './Components/VideoDetails'
+import VideoDetail from './Components/VideoDetails';
+import VideoList from './Components/VideoList';
 
 class App extends React.Component{
     state={
-        video: [],
+        videos: [],
         selectedVideo: null,
     }
     handleSubmit = async (searchTerm) => {
@@ -19,16 +20,17 @@ class App extends React.Component{
         }
     });
         this.setState({
-            videos: response.data.item,
+            videos: response.data.items,
             selectedVideo: response.data.items[0]
         });
 
     }
+   
     render(){
-        const {selectedVideo} = this.state;
+        const {selectedVideo, videos} = this.state;
         return (
-            <Grid justify="center" container spacing={10}>
-                <Grid item xs={12}>
+            <Grid style={{justifyContent: "center"}} container spacing={10}>
+                <Grid item xs={11}>
                     <Grid container spacing={10}>
                         <Grid item xs={12}>
                             <SearchBar onFormSubmit={this.handleSubmit}/>
@@ -37,7 +39,7 @@ class App extends React.Component{
                             <VideoDetail video={selectedVideo}/>
                         </Grid>
                         <Grid item xs={4}>
-                            {/* Video Item */}
+                            <VideoList videos={videos} />
                         </Grid>
                     </Grid>
                 </Grid>
